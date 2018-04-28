@@ -18,7 +18,7 @@ function cloneRepo() {
     console.log("Cloning repo...");
     // delete old copy of repo. Then, clone a fresh copy of repo from GitHub
     cmd.get(
-        'rm -rf hackathon-starter && git clone https://github.com/sahat/hackathon-starter.git',
+        'rm -rf starter-node-angular && git clone https://github.com/carlosg34/starter-node-angular.git',
         function(err, data, stderr) {
             console.log("cloneRepo callback\n\t err: " + err + "\n\t data: " + data + "\n\t stderr: " + stderr);
             if (err == null) {
@@ -30,7 +30,7 @@ function cloneRepo() {
 
 // transfers local project to the remote server
 function transferProjectToRemote(failed, successful) {
-    return ssh.putDirectory(__dirname + '/hackathon-starter', '/home/ubuntu/hackathon-starter-temp', {
+    return ssh.putDirectory(__dirname + '/starter-node-angular', '/home/ubuntu/starter-node-angular-temp', {
         recursive: true,
         concurrency: 1,
         validate: function(itemPath) {
@@ -52,7 +52,7 @@ function transferProjectToRemote(failed, successful) {
 
 // creates a temporary folder on the remote server
 function createRemoteTempFolder() {
-    return ssh.execCommand('rm -rf hackathon-starter-temp && mkdir hackathon-starter-temp', {
+    return ssh.execCommand('rm -rf starter-node-angular && mkdir starter-node-angular-temp', {
         cwd: '/home/ubuntu'
     })
 }
@@ -66,7 +66,7 @@ function stopRemoteServices() {
 
 // updates the project on the server
 function updateRemoteApp() {
-    return ssh.execCommand('cp -r hackathon-starter-temp/* hackathon-starter/ && rm -rf hackathon-starter-temp/*', {
+    return ssh.execCommand('cp -r starter-node-angular/* starter-node-angular/ && rm -rf starter-node-angular-temp/*', {
         cwd: '/home/ubuntu'
     })
 }
@@ -91,8 +91,8 @@ function sshConnect() {
         .then(function() {
             console.log("SSH Connection established.");
 
-            // Create "hackathon-starter-temp" directory on remote server
-            console.log("Creating `hackathon-starter-temp` folder.");
+            // Create "app" directory on remote server
+            console.log("Creating `starter-node-angular` folder.");
 
             return createRemoteTempFolder();
         })
